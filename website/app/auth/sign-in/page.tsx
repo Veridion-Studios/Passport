@@ -119,6 +119,9 @@ export default function SignInPage() {
             type="submit"
             disabled={loading}
             onClick={async () => {
+              if (process.env.NODE_ENV === "development") {
+                console.log("[DEV] Sign In Attempt:", `Email: ${email}`);
+              }
               await signIn.email(
                 {
                   email,
@@ -126,12 +129,21 @@ export default function SignInPage() {
                 },
                 {
                   onRequest: () => {
+                    if (process.env.NODE_ENV === "development") {
+                      console.log("[DEV] Signing in... (request sent)");
+                    }
                     setLoading(true);
                   },
                   onResponse: () => {
+                    if (process.env.NODE_ENV === "development") {
+                      console.log("[DEV] Sign in response received.");
+                    }
                     setLoading(false);
                   },
                   onSuccess: () => {
+                    if (process.env.NODE_ENV === "development") {
+                      console.log("[DEV] Sign in successful! Redirecting to dashboard.");
+                    }
                     router.push("/");
                   },
                 },

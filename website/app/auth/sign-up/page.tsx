@@ -288,6 +288,9 @@ export default function SignUp() {
                         className="w-full"
                         disabled={loading || !agreeTerms}
                         onClick={async () => {
+                            if (process.env.NODE_ENV === "development") {
+                                console.log(`Sign Up Attempt: Name: ${firstName} ${lastName}, Email: ${email}`);
+                            }
                             await signUp.email({
                                 email,
                                 password,
@@ -296,15 +299,27 @@ export default function SignUp() {
                                 callbackURL: "/dashboard",
                                 fetchOptions: {
                                     onResponse: () => {
+                                        if (process.env.NODE_ENV === "development") {
+                                            console.log("[DEV] Sign up response received.");
+                                        }
                                         setLoading(false);
                                     },
                                     onRequest: () => {
+                                        if (process.env.NODE_ENV === "development") {
+                                            console.log("[DEV] Signing up... (request sent)");
+                                        }
                                         setLoading(true);
                                     },
                                     onError: (ctx) => {
+                                        if (process.env.NODE_ENV === "development") {
+                                            console.log(`[DEV] Sign up error: ${ctx.error?.message || "Unknown error"}`);
+                                        }
                                         toast.error(ctx.error.message);
                                     },
                                     onSuccess: async () => {
+                                        if (process.env.NODE_ENV === "development") {
+                                            console.log("[DEV] Sign up successful! Redirecting to dashboard.");
+                                        }
                                         router.push("/dashboard");
                                     },
                                 },
