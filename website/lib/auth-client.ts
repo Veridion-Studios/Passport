@@ -1,4 +1,3 @@
-
 import { createAuthClient } from "better-auth/client";
 import { emailOTPClient } from "better-auth/client/plugins";
 
@@ -38,4 +37,30 @@ export const getErrorMessage = (code: string, lang: "en" | "es") => {
         return errorCodes[code as keyof typeof errorCodes][lang];
     }
     return "";
+};
+
+// --- FIXED getCurrentUser ---
+export const getCurrentUser = async (): Promise<{ name: string; email: string } | null> => {
+    try {
+        const sessionResult = await authClient.getSession();
+        if (
+            sessionResult &&
+            "data" in sessionResult &&
+            sessionResult.data &&
+            sessionResult.data.user
+        ) {
+            return {
+                name: sessionResult.data.user.name ?? "",
+                email: sessionResult.data.user.email ?? "",
+            };
+        }
+        return null;
+    } catch {
+        return null;
+    }
+};
+
+export type CurrentUser = {
+    name: string;
+    email: string;
 };

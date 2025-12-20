@@ -32,7 +32,7 @@ export const auth = betterAuth({
                 }
                 if (subject && html) {
                     await resend.emails.send({
-                        from: 'Veridion Studios - Passports <no-reply@studio.theveridionlibrary.org>',
+                        from: 'Veridion Studios <no-reply@studio.theveridionlibrary.org>',
                         to: [email],
                         subject,
                         html,
